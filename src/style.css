@@ -16,6 +16,10 @@ nav {
   margin-bottom: 10px;
 }
 
+nav {
+  margin-bottom: 10px;
+}
+
 .card {
   border: solid 1px #999;
   border-radius: 8px;
@@ -30,6 +34,11 @@ table {
   border-collapse: collapse;
   width: 100%;
   margin: 10px 0px;
+}
+
+table th {
+  background-color: #777;
+  color: white;
 }
 
 th,
