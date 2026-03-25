@@ -10,3 +10,6 @@ console.log("isShow = ", isShow);
 
 const productCss = "金魚都能懂的 CSS 必學屬性";
 console.log(productCss);
+
+let createDate = undefined;
+console.log("Create Date = ", createDate);
