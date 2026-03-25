@@ -8,8 +8,8 @@ console.log("Product Name = ", productName);
 let isShow = true;
 console.log("isShow = ", isShow);
 
-const productCss = "金魚都能懂的 CSS 必學屬性";
-console.log(productCss);
-
 let createDate = new Date();
 console.log("Create Date = ", createDate);
+
+let modifyDate: Date | undefined = undefined;
+console.log("Modify Date =", modifyDate);
