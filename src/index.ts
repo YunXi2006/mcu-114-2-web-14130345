@@ -8,13 +8,7 @@ let products = [
   new Product(5, "書籍 C", "博碩文化", 500, false, new Date("2024-4-10")),
   new Product(6, "書籍 D", "博碩文化", 500, false, new Date("2024-4-10")),
 ];
-for (const item of products) {
-  if (item.isShow) {
-    console.table(item);
-  }
-}
-console.table(products);
 
-products[0]!.setDisplay(false);
+const displayProducts = products.filter((item) => item.isShow);
 
-console.table(products);
+displayProducts.forEach((item) => console.table(item));
