@@ -1,12 +1,11 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, booleanAttribute, numberAttribute } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output, booleanAttribute, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
   imports: [DatePipe, CurrencyPipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
-  host: { class: 'app-product-card' },
 })
 export class ProductCardComponent {
   @Input({ required: true, transform: numberAttribute })
@@ -16,7 +15,7 @@ export class ProductCardComponent {
   productName!: string;
 
   @Input()
-  author!: string;
+  authors!: string[];
 
   @Input()
   company!: string;
