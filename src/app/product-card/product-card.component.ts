@@ -7,6 +7,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
+  @Input({ required: true, transform: numberAttribute })
+  id!: number;
+
   @Input()
   productName!: string;
 
@@ -16,7 +19,7 @@ export class ProductCardComponent {
   @Input()
   company!: string;
 
-  @Input()
+  @Input({ transform: booleanAttribute })
   isShow!: boolean;
 
   @Input()
