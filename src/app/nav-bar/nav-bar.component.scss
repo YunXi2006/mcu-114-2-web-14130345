@@ -10,7 +10,9 @@
     text-decoration: none;
 
     &:hover,
-    &:active,
+    &:active {
+      background-color: #005ccb33;
+    }
     &:force {
       text-decoration: none;
     }
