@@ -24,6 +24,20 @@ export class ProductPageComponent {
 
   protected readonly products = signal<Product[]>([]);
 
+  protected onAdd(): void {
+    const product = new Product({
+      name: '書籍 Z',
+      authors: ['作者甲', '作者乙', '作者丙'],
+      company: '博碩文化',
+      isShow: true,
+      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
+      createDate: new Date('2025/4/9'),
+      price: 10000,
+    });
+    this.productService.add(product);
+    this.getProducts(this.pageIndex(), this.pageSize());
+  }
+
   constructor() {
     effect(() => {
       const pageIndex = this.pageIndex();
