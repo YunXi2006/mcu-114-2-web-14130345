@@ -31,4 +31,8 @@ export class ProductDetailPageComponent implements OnInit {
   onBack(): void {
     this.router.navigate(['products']);
   }
+  onRemove(): void {
+    this.productService.remove(this.product().id);
+    this.router.navigate(['products']);
+  }
 }
