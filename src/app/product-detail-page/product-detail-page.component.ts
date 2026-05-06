@@ -20,7 +20,7 @@ export class ProductDetailPageComponent implements OnInit {
   private readonly productService = inject(ProductService);
 
   ngOnInit(): void {
-    this.productService.getById(this.id()).subscribe((product) => this.product.set(product));
+    const product = this.productService.getById(this.id()).subscribe((product) => this.product.set(product));
   }
 
   onEdit(): void {
