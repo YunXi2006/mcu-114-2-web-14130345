@@ -1,9 +1,10 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Product } from '../model/product';
 import { ProductService } from '../services/product.service';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-page',
@@ -20,9 +21,24 @@ export class ProductPageComponent {
 
   protected readonly pageSize = signal(2);
 
-  protected readonly totalCount = signal(0);
+  private readonly data = rxResource({
+    params: () => ({ pageIndex: this.pageIndex(), pageSize: this.pageSize() }),
+    defaultValue: { data: [], count: 0 },
+    stream: ({ params }) => {
+      const { pageIndex, pageSize } = params;
+      return this.productService.getList(undefined, pageIndex, pageSize);
+    },
+  });
 
-  protected readonly products = signal<Product[]>([]);
+  protected readonly totalCount = computed(() => {
+    const { count } = this.data.value();
+    return count;
+  });
+
+  protected readonly products = computed(() => {
+    const { data } = this.data.value();
+    return data;
+  });
 
   onAdd(): void {
     const product = new Product({
@@ -34,21 +50,17 @@ export class ProductPageComponent {
       createDate: new Date('2025/4/9'),
       price: 10000,
     });
-    this.productService.add(product).subscribe(() => this.getProducts(this.pageIndex(), this.pageSize()));
+    this.productService.add(product).subscribe(() => this.data.reload());
   }
 
   onRemove({ id }: Product): void {
-    this.productService.remove(id).subscribe(() => {
-      this.pageIndex.set(1);
-      this.getProducts(this.pageIndex(), this.pageSize());
-    });
+    this.productService.remove(id).subscribe(() => this.pageIndex.set(1));
   }
 
   constructor() {
     effect(() => {
       const pageIndex = this.pageIndex();
       const pageSize = this.pageSize();
-      this.getProducts(pageIndex, pageSize);
     });
   }
 
@@ -58,12 +70,5 @@ export class ProductPageComponent {
 
   onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
-  }
-
-  private getProducts(pageIndex: number, pageSize: number): void {
-    this.productService.getList(undefined, pageIndex, pageSize).subscribe(({ data, count }) => {
-      this.products.set(data);
-      this.totalCount.set(count);
-    });
   }
 }
