@@ -53,15 +53,15 @@ export class ProductPageComponent {
   onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
   }
-
-  private getProducts(pageIndex: number, pageSize: number): void {
-    const { data, count } = this.productService.getList(undefined, this.pageIndex(), this.pageSize());
-    this.products.set(data);
-    this.totalCount.set(count);
-  }
   protected onRemove({ id }: Product): void {
     this.productService.remove(id);
     this.pageIndex.set(1);
     this.getProducts(this.pageIndex(), this.pageSize());
+  }
+  private getProducts(pageIndex: number, pageSize: number): void {
+    this.productService.getList(undefined, pageIndex, pageSize).subscribe(({ data, count }) => {
+      this.products.set(data);
+      this.totalCount.set(count);
+    });
   }
 }
