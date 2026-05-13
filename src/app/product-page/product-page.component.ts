@@ -13,18 +13,25 @@ import { rxResource } from '@angular/core/rxjs-interop';
   styleUrl: './product-page.component.scss',
 })
 export class ProductPageComponent {
+  constructor() {
+    effect(() => {
+      console.log('pageIndex changed:', this.pageIndex());
+      console.log('products:', this.products());
+    });
+  }
   private readonly router = inject(Router);
 
   private readonly productService = inject(ProductService);
 
   protected readonly pageIndex = signal(1);
 
-  protected readonly pageSize = signal(2);
+  protected readonly pageSize = signal(5);
 
   private readonly data = rxResource({
     params: () => ({ pageIndex: this.pageIndex(), pageSize: this.pageSize() }),
     defaultValue: { data: [], count: 0 },
     stream: ({ params }) => {
+      console.log('params:', params);
       const { pageIndex, pageSize } = params;
       return this.productService.getList(undefined, pageIndex, pageSize);
     },
@@ -40,7 +47,7 @@ export class ProductPageComponent {
     return data;
   });
 
-  onAdd(): void {
+  protected onAdd(): void {
     const product = new Product({
       name: '書籍 Z',
       authors: ['作者甲', '作者乙', '作者丙'],
@@ -53,22 +60,15 @@ export class ProductPageComponent {
     this.productService.add(product).subscribe(() => this.data.reload());
   }
 
-  onRemove({ id }: Product): void {
+  protected onRemove({ id }: Product): void {
     this.productService.remove(id).subscribe(() => this.pageIndex.set(1));
   }
 
-  constructor() {
-    effect(() => {
-      const pageIndex = this.pageIndex();
-      const pageSize = this.pageSize();
-    });
-  }
-
-  onEdit(product: Product): void {
+  protected onEdit(product: Product): void {
     this.router.navigate(['product', 'form', product.id]);
   }
 
-  onView(product: Product): void {
+  protected onView(product: Product): void {
     this.router.navigate(['product', 'view', product.id]);
   }
 }
