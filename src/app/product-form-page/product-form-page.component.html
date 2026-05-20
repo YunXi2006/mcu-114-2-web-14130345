@@ -1,15 +1,29 @@
 <div class="container" [formGroup]="form">
-  <div class="form-item">
-    <div class="form-column">
-      <label>名稱</label>
-      <input type="text" formControlName="name" />
+  <div class="container" [formGroup]="form">
+    <div class="form-item">
+      <div class="form-column">
+        <label>名稱</label>
+        <input type="text" formControlName="name" />
+      </div>
     </div>
-  </div>
-  <div class="form-item">
-    <div class="form-column">
-      <label>作者</label>
-      <button type="button">新增</button>
+    <div class="form-item">
+      <div class="form-column">
+        <label>作者</label>
+        <button type="button" (click)="onAddAuthor()">新增</button>
+      </div>
     </div>
+    <ng-container formArrayName="authors">
+      @for (control of authors.controls; track $index) {
+      <div class="form-item">
+        <div class="form-column">
+          <div>
+            <button type="button" (click)="authors.removeAt($index)">刪除</button>
+          </div>
+          <input type="text" [formControl]="control" />
+        </div>
+      </div>
+      }
+    </ng-container>
   </div>
   <div class="form-item">
     <div class="form-column">
